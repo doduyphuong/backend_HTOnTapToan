@@ -1,0 +1,88 @@
+<% layout('./../../layout/admin') -%>
+
+<form name="form1" action="" method="POST" >
+<div class="row">
+<div class="col-sm-12">
+    <div class="card">
+        <div class="card-header">
+            <strong><%=adminController%></strong>
+            <small><%=adminAction%></small>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                    <input type="hidden" name="id_user" value="<%=user._id%>"/>
+                    <label><strong>Info</strong></label> <br>
+                    <strong>id :</strong> <%=user._id%> <br>
+                    <strong>username :</strong> <%=user.username%> <br>
+                    <strong>fullname :</strong> <%=user.fullname%> <br>
+                    <strong>email :</strong> <%=user.email%> <br>
+                    <strong>phone :</strong> <%=user.phone%>
+                    <br>
+                    <br>
+                    <button class="btn btn-sm btn-primary" type="submit">
+                            <i class="fa fa-dot-circle-o"></i> Submit
+                    </button>
+                    &nbsp;
+                    <a class="btn btn-sm btn-default" href='../../manage_user/detail/<%=user._id%>'>Return</a>
+                    </div>
+                </div>
+            </div>              
+            <!-- /.row-->
+            <div class="row">
+                <div class="col-sm-12" id="load_data">
+                <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                    <thead>
+                        <tr>                                               
+                            <th>&nbsp;</th>
+                            <% var p = Object.keys(list_permission);%>
+                            <% for(var i=0; i < p.length; i++) { %>
+                                <th><%=p[i]%></th>
+                            <% } %>            
+                        </tr>
+                    </thead>
+                    <tbody>                        
+                        <% for(var i=0; i < module_list.length; i++) { %>                        
+                            <tr>
+                                <td><%=module_list[i].name%></td>
+                                <% for(var j=0; j < p.length; j++) { %>
+                                    <% var per_key = p[j] %>
+                                    <td>                                        
+                                        <% var checkedtext = "" %>
+                                        <% if(module_list[i][per_key] == true ){ checkedtext = "checked" }%>                                      
+                                        <% var cb_val = module_list[i].name + '_' + per_key%>
+                                        <input <%=checkedtext%>  name="<%=cb_val%>" value="<%=list_permission[per_key]%>" id="switch-onColor" type="checkbox" data-on-color="primary" data-off-color="warning" data-on-text="Yes" data-off-text="No">                            </td>
+                                <% } %>
+                            </tr>
+                        <% } %>                            
+                    </tbody>
+                </table>
+                </div>
+            </div>          
+        </div>
+        <!-- /.row-->
+    </div>
+    </div>
+</div>    
+</div>
+</form>
+
+<link href="<%=staticUrl%>/public/switchjs/bootstrap-switch.css" rel="stylesheet">
+<script src="<%=staticUrl%>/public/switchjs/bootstrap-switch.js"></script>
+<script src="<%=staticUrl%>/public/switchjs/highlight.js"></script>
+<script src="<%=staticUrl%>/public/switchjs/main.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#id_role').change(function(){
+            var id_role = $('#id_role').val();
+            var url = 'get_permission_of_role';
+            $.post(url, {id_role : id_role}, function(data){
+                $('#load_data').html(data);
+                $("[type=checkbox]").bootstrapSwitch();
+            });
+        });
+    });
+</script>
+
+<%-scriptjs%>

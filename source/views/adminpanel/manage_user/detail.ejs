@@ -1,0 +1,60 @@
+<% layout('./../../layout/admin') -%>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <strong><%=adminController%>: </strong>
+                <small><%=item._id%></small>
+            </div>
+            <div class="card-body">
+                <div class="row" >
+                    <div class="col-lg-12">
+                        <!--group-->                                                
+                        <a href="<%=returnUrl%>">Return</span></a>
+                        <!--end group-->    
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="row" >
+                    <div class="col-lg-12">
+                        <!--group-->
+                        <b>user permission manage :</b>                        
+                        <a class="badge badge-warning" href="../../permission_user/manages/<%=item._id%>"><span class="icon-pencil"> Change</span></a>
+                        <!--end group-->    
+                    </div>
+                </div>
+                <div class="row" >
+                    <div class="col-lg-12">
+                        <!--group-->
+                        <b>group :</b>
+                        <%for(var k = 0; k < selected_group_list.length;k++){%>
+                            <span class="badge badge-danger"><%=selected_group_list[k]['group_name']%></span>
+                            &nbsp;
+                        <%}%>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a class="badge badge-warning" href="../changegroup/<%=item._id%>"><span class="icon-pencil"> Change</span></a>
+                        <!--end group-->    
+                    </div>
+                </div>
+                <% for(var i=0; i < out_fields.length; i++) { %>        
+                    <div class="row" >
+                        <div class="col-lg-12">                                                    
+                            <% var t ='item.' + out_fields[i] %>
+                            <b><%=out_fields[i]%> : </b>
+                            <%if(out_fields[i] != 'password'){%>
+                                <%=eval(t)%>                                                        
+                            <%}else{%>
+                                <span>XXXXX</span>
+                            <%}%>
+                            <%if(out_fields[i] == 'password'){%>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a class="badge badge-warning" href="../changepass/<%=item._id%>"><span class="icon-pencil"> Change</span></a>
+                            <%}%>                        
+                        </div>
+                    </div>
+                <% } %>                
+            </div>
+        </div> 
+    </div>   
+</div>

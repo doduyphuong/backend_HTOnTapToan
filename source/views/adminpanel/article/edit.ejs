@@ -1,0 +1,233 @@
+<% layout('./../../layout/admin') -%>
+<script src="<%=staticUrl%>/public/javascripts/admin_upload_photo.js"></script>
+<form name="form1" action="" method="POST">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong>
+                        <%=adminController%></strong>
+                    <small>
+                        <%=adminAction%></small>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="cate_id">Cate_id</label>
+                                        <input name="cate_id" class="form-control" id="cate_id" type="text" placeholder="Enter cate_id"
+                                            value="<%= item.cate_id %>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="publish_date">Publish_date</label>
+                                        <input name="publish_date" class="form-control datepicker" id="publish_date"
+                                            type="text" placeholder="Enter publish_date" value="<%= helpers.helper.format_date(item.publish_date) %>"
+                                            autocomplete="off"    
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="title">Title</label>
+                                        <input name="title" class="form-control" id="title" type="text" placeholder="Enter title"
+                                            value="<%= item.title %>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div id="fw_upload_cropjs">
+                                            <input type="hidden" name="image" value="<%= item.image %>" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="image_alt">Image_alt</label>
+                                        <input name="image_alt" class="form-control" id="image_alt" type="text"
+                                            placeholder="Enter image_alt" value="<%= item.image_alt %>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="description">Description</label>
+                                        <input name="description" class="form-control" id="description" type="text"
+                                            placeholder="Enter description" value="<%= item.description %>">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- start data -->
+                            <% data = JSON.parse(item.data) %>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="note_1">Note_1</label>
+                                        <input name="note_1" class="form-control" id="note_1" type="text" placeholder="Enter note_1"
+                                            value="<%= data.note_1 %>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="note_2">Note_2</label>
+                                        <input name="note_2" class="form-control" id="note_2" type="text" placeholder="Enter note_2"
+                                            value="<%= data.note_2 %>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="note_3">Note_3</label>
+                                        <input name="note_3" class="form-control" id="note_3" type="text" placeholder="Enter note_3"
+                                            value="<%= data.note_3 %>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="note_4">Note_4</label>
+                                        <input name="note_4" class="form-control" id="note_4" type="text" placeholder="Enter note_4"
+                                            value="<%= data.note_4 %>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="note_5">Note_5</label>
+                                        <input name="note_5" class="form-control" id="note_5" type="text" placeholder="Enter note_5"
+                                            value="<%= data.note_5 %>">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end data -->
+
+                            <!-- start seo -->
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="seo_title">SEO_title</label>
+                                        <input name="seo_title" class="form-control" id="seo_title" type="text"
+                                            placeholder="Enter seo_title" value="<%= item.seo_title %>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="seo_description">SEO_description</label>
+                                        <input name="seo_description" class="form-control" id="seo_description" type="text"
+                                            placeholder="Enter seo_description" value="<%= item.seo_description %>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="seo_keyword">SEO_keyword</label>
+                                        <input name="seo_keyword" class="form-control" id="seo_keyword" type="text"
+                                            placeholder="Enter seo_keyword" value="<%= item.seo_keyword %>">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end seo -->
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="status">Status</label>
+                                        <select class="form-control" id="status" name="status">
+                                            <% for(var i = 0; i < status_list.length; i++) { %>
+                                            <option value="<%=status_list[i].value %> " <% if(status_list[i].value==item.status){
+                                                %>
+                                                selected
+                                                <% } %>
+                                                >
+                                                <%=status_list[i].name%>
+                                            </option>
+                                            <%}%>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="is_hot">Is_hot</label>
+                                        <select class="form-control" id="is_hot" name="is_hot">
+                                            <option value="1" <% if(item.is_hot==1){ %>
+                                                selected
+                                                <% } %>
+                                                >
+                                                Active
+                                            </option>
+
+                                            <option value="0" <% if(item.is_hot==0){ %>
+                                                selected
+                                                <% } %>
+                                                >
+                                                Inactive
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="main_content">Main content</label>
+                                        <textarea id="summernote" name="main_content"><%= item.main_content %></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.row-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <button class="btn btn-sm btn-primary" type="submit">
+                                    <i class="fa fa-dot-circle-o"></i> Submit
+                                </button>
+                                &nbsp;
+                                <a href="<%=returnUrl%>">Return</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row-->
+            </div>
+        </div>
+    </div>
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+        $('#summernote').summernote({
+            height: 600
+        });
+    });
+
+    $(document).ready(function () {
+        upload_photo_with_crop_js('fw_upload_cropjs', 'image', 500, 500, 800, 600, '800/800'); //field, thumb_w, thumb_h, large_w, large_h, ratio
+    });
+</script>

@@ -1,0 +1,54 @@
+<% layout('./../../layout/admin') -%>
+<form name="form1" action="" method="POST" >
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                <strong><%=adminController%></strong>
+                <small><%=adminAction%></small>
+            </div>
+            <div class="card-body">            
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Change pass for </label>
+                            <label><strong><%=item.username%></strong></label>                        
+                        </div>
+                    </div>
+                </div>            
+                        
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="password">New password</label>
+                            <input name="password" class="form-control" id="password" type="password" placeholder="New password" value="">                
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="re_password">Email</label>
+                            <input name="re_password" class="form-control" id="re_password" type="password" placeholder="Re-enter password" value="">                
+                        </div>
+                    </div>
+                </div>            
+                <!-- /.row-->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <button class="btn btn-sm btn-primary" type="submit">
+                                <i class="fa fa-dot-circle-o"></i> Submit
+                            </button>
+                            <a class="btn btn-sm btn-default" href="../detail/<%=item._id%>">
+                                Cancel
+                            </a>
+                        </div>
+                    </div>
+                </div>          
+            </div>
+            <!-- /.row-->
+        </div>
+    </div>    
+</div>
+</form>

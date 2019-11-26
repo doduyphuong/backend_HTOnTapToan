@@ -1,0 +1,7 @@
+<% for(var i=0; i < ex_module.length; i++) { %> 
+    <li class="nav-item">
+        <a class="nav-link" href="<%=baseUrl%>/adminpanel/<%=ex_module[i]['name']%>/">
+            <i class="nav-icon icon-star"></i> <%=ex_module[i]['description']%>
+        </a>
+    </li>  
+<%}%>

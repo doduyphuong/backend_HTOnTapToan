@@ -1,0 +1,12 @@
+{
+    "apps": [{
+        "name": "zevent-zsl-crm",
+        "script": "./bin/www_staging",
+        "env": {
+            "NODE_ENV": "staging"
+        },
+        "env_staging": {
+            "NODE_ENV": "staging"
+        }
+    }]
+}

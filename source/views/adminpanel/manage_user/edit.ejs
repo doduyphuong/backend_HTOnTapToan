@@ -1,0 +1,97 @@
+<% layout('./../../layout/admin') -%>
+<form name="form1" action="" method="POST" >
+<div class="row">
+<div class="col-sm-6">
+    <div class="card">
+        <div class="card-header">
+            <strong><%=adminController%></strong>
+            <small><%=adminAction%></small>
+        </div>
+        <div class="card-body">
+            
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <label><strong><%=item.username%></strong></label>                        
+                    </div>
+                </div>
+            </div> 
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                    <label for="id_role">Role</label>                    
+                        <select class="form-control" id="id_role" name="id_role">                    
+                            <%for(var i=0; i < role_list.length; i++){ %>
+                                <option value="<%=role_list[i]._id %>"  
+                                <% if(role_list[i]._id == item.id_role) { %> 
+                                selected 
+                                <% } %> 
+                                >
+                                <%=role_list[i].name%></option>
+                            <% } %>                
+                        </select>
+                    </div>
+                </div>
+            </div>  
+                    
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input name="phone" class="form-control" id="phone" type="text" placeholder="Enter phone" value="<%=item.phone%>">                
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input name="email" class="form-control" id="email" type="text" placeholder="Enter email" value="<%=item.email%>">                
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="fullname">Fullname</label>
+                        <input name="fullname" class="form-control" id="fullname" type="text" placeholder="Enter full name" value="<%=item.fullname%>">                
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class="form-control" id="status" name="status">                    
+                            <% for(var i = 0; i < status_list.length; i++) { %>
+                                <option value="<%=status_list[i].value %> "  
+                                <% if(status_list[i].value == item.status){ %> 
+                                selected 
+                                <% } %> 
+                                >
+                                <%=status_list[i].name%></option>
+                            <%}%>                
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row-->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <button class="btn btn-sm btn-primary" type="submit">
+                            <i class="fa fa-dot-circle-o"></i> Submit
+                        </button>
+                        &nbsp;
+                        <a href="<%=returnUrl%>">Return</a>
+                        </div>
+                </div>
+            </div>          
+        </div>
+        <!-- /.row-->
+    </div>
+    </div>
+</div>    
+</div>
+</form>

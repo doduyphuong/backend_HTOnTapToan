@@ -1,0 +1,58 @@
+<% layout('./../../layout/admin') -%>
+<form name="form1" action="" method="POST" >
+<div class="row">
+    <div class="col-sm-4">
+      <div class="card">
+        <div class="card-header">
+          <strong><%=adminController%></strong>
+          <small><%=adminAction%></small>
+        </div>
+        <div class="card-body">   
+          <!-- /.row-->
+          <div class="row">
+<div class="col-sm-12">
+<div class="form-group">
+<label for="cate_id">Cate_id</label>
+<input name="cate_id" class="form-control" id="cate_id" type="text" placeholder="Enter cate_id" value="<%=helpers.helper.view_data(appPostParam.cate_id)%>">
+</div>
+</div>
+</div>
+
+<div class="row">
+<div class="col-sm-12">
+<div class="form-group">
+<label for="title">Title</label>
+<input name="title" class="form-control" id="title" type="text" placeholder="Enter title" value="<%=helpers.helper.view_data(appPostParam.title)%>">
+</div>
+</div>
+</div>
+
+<div class="row">
+<div class="col-sm-12">
+<div class="form-group">
+<label for="description">Description</label>
+<input name="description" class="form-control" id="description" type="text" placeholder="Enter description" value="<%=helpers.helper.view_data(appPostParam.description)%>">
+</div>
+</div>
+</div>
+
+         
+          <!-- /.row-->          
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <button class="btn btn-sm btn-primary" type="submit">
+                    <i class="fa fa-dot-circle-o"></i> Submit
+                </button>
+              </div>
+            </div>
+          </div>          
+          </div>
+          <!-- /.row-->
+        </div>
+      </div>
+    </div>    
+  </div>
+</form>
+
+<%-scriptjs%>

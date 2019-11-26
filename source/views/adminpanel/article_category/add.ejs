@@ -1,0 +1,77 @@
+<% layout('./../../layout/admin') -%>
+<script src="<%=staticUrl%>/public/javascripts/admin_upload_photo.js"></script>
+<form name="form1" action="" method="POST">
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="card">
+        <div class="card-header">
+          <strong>
+            <%=adminController%></strong>
+          <small>
+            <%=adminAction%></small>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input name="name" class="form-control" id="name" type="text" placeholder="Enter name" value="<%=helpers.helper.view_data(appPostParam.name)%>">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label>Image</label>
+                <div id="fw_upload_cropjs">
+                  <input type="hidden" name="image" value="<%=helpers.helper.view_data(appPostParam.image)%>" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label for="parent_id">Parent_id</label>
+                <input name="parent_id" class="form-control" id="parent_id" type="text" placeholder="Enter parent_id"
+                  value="<%=helpers.helper.view_data(appPostParam.parent_id)%>">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label for="name">Status</label>
+                <select class="form-control" id="status" name="status">
+                  <% for(var i=0; i < status_list.length; i++) { %>
+                  <option value="<%=status_list[i].value%>">
+                    <%=status_list[i].name%>
+                  </option>
+                  <% } %>
+                </select>
+              </div>
+            </div>
+          </div>
+          <!-- /.row-->
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <button class="btn btn-sm btn-primary" type="submit">
+                  <i class="fa fa-dot-circle-o"></i> Submit
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.row-->
+      </div>
+    </div>
+  </div>
+  </div>
+</form>
+<script>
+  $(document).ready(function () {
+    upload_photo_with_crop_js('fw_upload_cropjs', 'image', 500, 500, 800, 600, '800/800'); //field, thumb_w, thumb_h, large_w, large_h, ratio
+  });
+</script>
+<%-scriptjs%>

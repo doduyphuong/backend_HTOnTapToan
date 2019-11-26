@@ -1,0 +1,45 @@
+<% layout('../../layout/admin') -%>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-align-justify"></i> Demo
+            </div>
+            <div class="card-body">
+                <div id="filter" class="form-group">
+                    <form name="form_filter" id="form_filter" action="" method="GET" class="form-inline">
+                        <input autocomplete="off" name="search" class="form-control" type="text" placeholder="Search"
+                            value="<%=helpers.helper.view_data(appGetParam.search)%>">
+                        &nbsp;
+                        <input autocomplete="off" name="startDate" class="form-control datepicker" type="text"
+                            placeholder="Start date" value="<%=helpers.helper.view_data(appGetParam.startDate)%>">
+                        &nbsp;
+                        <input autocomplete="off" name="endDate" class="form-control datepicker" type="text"
+                            placeholder="End date" value="<%=helpers.helper.view_data(appGetParam.endDate)%>">
+                        &nbsp;
+                        <button type="submit" class="btn btn-info">Submit</button>
+                    </form>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span style="font-weight:bold;text-transform:uppercase;">Total: <i id="total_item">0</i></span>
+                    <div class="">
+                        <button class="btn btn-primary float-right mr-2" id="fw_btn_inactive_list_id" onclick="fw_inactive_list_id('<%=adminController%>', 'fw_cb_items');"><span
+                                class="icon-trash"></span> Disable</button>
+                        <button class="btn btn-primary float-right mr-2" id="fw_btn_active_list_id" onclick="fw_active_list_id('<%=adminController%>', 'fw_cb_items');"><span
+                                class="icon-check"></span> Active</button>
+                        <a class="btn btn-primary float-right mr-2" href="add"><span class="fa fa-plus "></span> Add</a>
+                    </div>
+                </div>
+                <div id="card-body" class="scrolldata"></div>
+                <nav>
+                    <ul id="n_pagination" class="pagination"></ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        LoadDataList('<%=model_name%>', '<%=start_page%>', '<%=page_size%>', '<%=search_fields%>', '<%-filter%>', '<%-order%>', '<%-is_action%>', '<%-action_list%>');
+    });
+</script>

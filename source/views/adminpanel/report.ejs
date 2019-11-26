@@ -1,0 +1,66 @@
+<% layout('./../layout/admin') -%>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-align-justify"></i> Standard report : <strong><%=model_name%></strong>
+            </div>                
+            <div class="card-body">
+                <div id="filter" class="form-group">
+                    <form name="form_filter" id="form_filter" action="" method="GET" class="form-inline">                           
+                        <input autocomplete="off" id='startDate' name="startDate" class="form-control datepicker" type="text" placeholder="Start date" value="<%=helpers.helper.view_data(appGetParam.startDate)%>">                    
+                        &nbsp;                           
+                        <input autocomplete="off" id="endDate" name="endDate" class="form-control datepicker" type="text" placeholder="End date" value="<%=helpers.helper.view_data(appGetParam.endDate)%>">                    
+                        &nbsp;
+                        <a type="submit" class="btn btn-info" onclick="GetJsonData();">Submit</a>
+                    </form>
+                </div>                                                                                 
+                <div id="card-body">
+                    <div id="chart_div">
+                        
+                    </div>
+                </div>                                                        
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function GetJsonData() {
+        var url = baseUrl + '/adminpanel/report/get-data';
+        $.post(url,
+            {                 
+                '_csrf': reload_csrf_token(),
+                startDate: $('#startDate').val(),
+                endDate: $('#endDate').val(),
+                module: '<%=module%>'
+            }, function (data) {
+                //bind lại csrf vào các input form
+                var csrf = reload_csrf_token();
+
+                var array = JSON.parse(data);         
+                google.charts.load('current', {
+                    'packages': ['corechart']
+                });
+                google.charts.setOnLoadCallback(drawChart);
+
+                function drawChart() {
+                    var data_chart = google.visualization.arrayToDataTable(array['res_array']);
+
+                    var options = {
+                        title: $('#startDate').val() + ' -:- ' + $('#endDate').val() + ' [ Total:' + array['total'] + ' ]',
+                        curveType: 'function',
+                        legend: { position: 'bottom' },
+                        pointSize: 5
+                    };
+
+                    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+                    chart.draw(data_chart, options);
+                }
+            }
+        );
+
+        return false;
+    }
+</script>

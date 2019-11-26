@@ -1,0 +1,39 @@
+<% layout('./../../layout/admin') -%>
+<form name="form1" action="" method="POST" >
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <strong><%=adminController%>: </strong>
+                <small><%=module_name%></small>
+            </div>
+            <div class="card-body">                       
+                <% for(var i=0; i < out_fields.length; i++) { %>        
+                    <div class="row" >
+                        <div class="col-lg-6">                                                    
+                        <input <%=out_fields_checked[out_fields[i]]%>   name="<%=out_fields[i]%>" value="<%=out_fields[i]%>" id="switch-onColor" type="checkbox" data-on-color="primary" data-off-color="warning" data-on-text="Yes" data-off-text="No">
+                            <%=out_fields[i]%>                                                                                                           
+                        </div>
+                    </div>
+                <% } %>
+                <br>
+                <br>
+                <div class="row" >
+                    <div class="col-lg-12">
+                        <!--group-->                                                
+                        <button class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Submit</button>
+                        &nbsp;
+                        <a href="../../<%=module_name.toLowerCase()%>/">Return</span></a>
+                        <!--end group-->    
+                    </div>
+                </div>                
+            </div>
+        </div> 
+    </div>   
+</div>
+</form>
+
+<link href="<%=staticUrl%>switchjs/bootstrap-switch.css" rel="stylesheet">
+<script src="<%=staticUrl%>switchjs/bootstrap-switch.js"></script>
+<script src="<%=staticUrl%>switchjs/highlight.js"></script>
+<script src="<%=staticUrl%>switchjs/main.js"></script>
