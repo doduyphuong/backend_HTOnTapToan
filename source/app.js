@@ -104,30 +104,28 @@ app.use(helmet());
 app.use(helmet.xssFilter());
 
 //token
-var csrfProtection = csrf({
-  cookie: true
-});
-app.use(csrf());
+// var csrfProtection = csrf({
+//   cookie: true
+// });
+// app.use(csrf());
 
 
 // handle csrf error
-app.use(function (err, req, res, next) {
-  if (err.code !== 'EBADCSRFTOKEN') return next(err);
-  // handle CSRF token errors here
-  res.status(403);
-  res.send('Execute access forbidden (csrf invalid)');
-})
+// app.use(function (err, req, res, next) {
+//   if (err.code !== 'EBADCSRFTOKEN') return next(err);
+//   // handle CSRF token errors here
+//   res.status(403);
+//   res.send('Execute access forbidden (csrf invalid)');
+// })
 
 
-// middleware token
-app.use(function (req, res, next) {
-  var token = req.csrfToken();
-  res.cookie('CSRF-TOKEN', token);
-  res.locals.csrftoken = token;
-  next();
-});
-
-
+// // middleware token
+// app.use(function (req, res, next) {
+//   var token = req.csrfToken();
+//   res.cookie('CSRF-TOKEN', token);
+//   res.locals.csrftoken = token;
+//   next();
+// });
 
 //fileUpload
 app.use(fileUpload({limits: { fileSize: 6 * 1024 * 1024 }})); //6MB
