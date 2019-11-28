@@ -10,7 +10,6 @@ var helmet = require('helmet');
 var csrf = require('csurf');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
-const redisStore = require('connect-redis')(session);
 var env = 'dev';//production, dev
 
 var app = express();
@@ -29,11 +28,8 @@ app.use(express.urlencoded({
 }));
 app.use(cookieParser());
 
-
-
 //init root folder
 global.__base = __dirname + '/';
-
 
 //config && cors
 if(env != 'production'){
@@ -61,18 +57,21 @@ app.use(cors(whitelist_domain));
 //helpers
 global.helpers = require('./helpers');
 
+
+//socket
+var socket_server = require('http').Server(app);
+var io = require('socket.io').listen(socket_server);
+io.on('connection', function (socket) {
+  console.log('socket connected');
+});
+
 //locals config
 app.locals.appName = config.app.appName;
 
 //frontend meta
-app.locals.pageTitle = 'Quản lý khách hàng trên Zalo';
-app.locals.pageDes = 'Zalo luôn lắng nghe yêu thương';
-app.locals.pageImage = 'https://stc.adtima.vn/media/images/fbshare_cover.jpg';
-
-//backend meta
-app.locals.pageAdminTitle = 'Quản trị CRM Zalo';
-app.locals.pageAdminDes = 'Zalo luôn lắng nghe yêu thương';
-app.locals.pageAdminImage = 'https://stc.adtima.vn/media/images/fbshare_cover.jpg';
+app.locals.pageTitle = 'Học cùng bé';
+app.locals.pageDes = 'Luôn bên bé và học cùng bé';
+app.locals.pageImage = 'http://icons.iconarchive.com/icons/google/noto-emoji-animals-nature/1024/22246-elephant-icon.png';
 
 //Biến static và baseurl cho trường hợp refix
 global.__baseUrl = ''
@@ -82,46 +81,17 @@ __baseUrl = config.app.baseUrl;
 app.locals.staticUrl = config.app.staticUrl;
 __staticUrl = config.app.staticUrl;
 
-//global evn
-global.__env = env;
-
 // session middleware
-if(config.app.sessionRedis == false)
-{
-  app.use(session({
-    secret: config.app.sessionKey, //key session
-    resave: true,
-    saveUninitialized: true,
-    name : 'adtima_s',
-    cookie: {
-      path: '/',
-      secure: false,
-      maxAge: 3600000
-    } //60 phút
-  }));
-}
-else{
-  try{
-    var redis   = require("redis");
-    var client  = redis.createClient();
-    app.use(session({  
-      secret: config.app.sessionKey, //key session
-      store: new redisStore({ host: config.redis.host, port: config.redis.port, client: client, ttl :  260}),
-      resave: true,
-      saveUninitialized: true,
-      name : 'adtima_s',    
-      cookie: {
-        path: '/',
-        secure: false,
-        maxAge: 3600000
-      } //60 phút
-    }));
-  }
-  catch(ex){
-    console.log(ex);
-  } 
-}
-
+app.use(session({
+  secret: 'kp@Nhqa#lovep213jklP', //key session
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    path: '/',
+    secure: false,
+    maxAge: 3600000
+  } //60 phút
+}));
 
 //flash
 app.use(flash());
@@ -140,11 +110,8 @@ var csrfProtection = csrf({
 app.use(csrf());
 
 
-//handle csrf error
+// handle csrf error
 app.use(function (err, req, res, next) {
-  //nếu post vào đầu callback thì bỏ qua csrf
-  if (req.path == __baseUrl + '/callback/zalo-oa-event') return next();
-  
   if (err.code !== 'EBADCSRFTOKEN') return next(err);
   // handle CSRF token errors here
   res.status(403);
@@ -152,7 +119,7 @@ app.use(function (err, req, res, next) {
 })
 
 
-//middleware token
+// middleware token
 app.use(function (req, res, next) {
   var token = req.csrfToken();
   res.cookie('CSRF-TOKEN', token);
@@ -167,8 +134,7 @@ app.use(fileUpload({limits: { fileSize: 6 * 1024 * 1024 }})); //6MB
 
 
 //app middleware tổng của app
-var mdw_app = (function (req, res, next) {  
-
+var mdw_app = (function (req, res, next) {
   app.locals.scriptGlobal = '<script>var baseUrl="' + __baseUrl + '";var staticUrl="' + __staticUrl + '";</script>';
   //recaptcha
   res.locals.recaptcha = {
@@ -199,17 +165,20 @@ app.use(__baseUrl + '/medias', express.static(path.join(__dirname, 'medias')));
 var indexRouter = require('./configs/routes');
 app.use(__baseUrl + '/', mdw_app, indexRouter);
 
-//route
-var adminRouter = require('./configs/routes_admin');
-app.use(__baseUrl + '/adminpanel', mdw_app, adminRouter);
+var openRouter = require('./configs/routes_openapi');
+app.use(__baseUrl + '/openapi', mdw_app, openRouter);
 
-//route
-var openApiRouter = require('./configs/routes_openapi');
-app.use(__baseUrl + '/openapi', mdw_app, openApiRouter);
+//socket
+// var socket_io = require('socket.io');
+// var io = socket_io();
+// app.io = io;
+// var socket_chat = require('./configs/socket')(io);
+// app.use(__baseUrl + '/messenger', socket_chat);
+// app.use(__baseUrl + '/messenger', mdw_app, socket);
 
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {  
+app.use(function (req, res, next) {
   helpers.helper.show_404(res);
 });
 
@@ -226,5 +195,6 @@ app.use(function (err, req, res, next) {
 
 //port
 app.listen(config.app.port);
+
 
 module.exports = app;

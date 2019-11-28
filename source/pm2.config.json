@@ -1,6 +1,6 @@
 {
     "apps": [{
-        "name": "zevent-zsl-crm",
+        "name": "zevent-zsl-crm-webhook",
         "script": "./bin/www_staging",
         "env": {
             "NODE_ENV": "staging"

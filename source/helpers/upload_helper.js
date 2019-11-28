@@ -1,5 +1,5 @@
 var express = require('express');
-var upload_helper = {};
+var upload_helper = express;
 var request = require('request');
 var path = require('path');
 

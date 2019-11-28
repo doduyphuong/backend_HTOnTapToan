@@ -1,5 +1,5 @@
 var express = require('express');
-var image_helper = {};
+var image_helper = express;
 var request = require('request');
 var Jimp = require("jimp");
 

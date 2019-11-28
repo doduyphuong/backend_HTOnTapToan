@@ -1,5 +1,5 @@
 var express = require('express');
-var data_helper = {};
+var data_helper = express;
 var db = require('./../models');
 var bols = require('./../model_bols');
 var moment = require('moment');
@@ -27,6 +27,21 @@ data_helper.get_manage_role_name = async function(id){
         //console.log(item.name);
         return item.name;
     }       
+}
+
+data_helper.check_message_filter_keyword = async function(_keyword) {
+    var item = null;
+    console.log(_keyword);
+    if(_keyword != undefined) {
+        item = await db.Crm_message_filter_keyword.find({ "keyword": { $regex: _keyword, $options: "x" }});
+    }
+    console.log(item.length);
+    console.log(item);
+    if(item.length == 0) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 

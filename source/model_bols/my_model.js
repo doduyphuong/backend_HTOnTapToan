@@ -15,17 +15,11 @@ class My_model {
             var mySchema = eval('db.' + model);
 
             // Do async job
-            if(req){
-                if (req.session.userdata) {
-                    data.created = req.session.userdata.username;
-                    data.modified = req.session.userdata.username;
-                }
-                else {
-                    data.created = 'n/a';
-                    data.modified = 'n/a';
-                }
+            if (req.session.userdata) {
+                data.created = req.session.userdata.username;
+                data.modified = req.session.userdata.username;
             }
-            else{
+            else {
                 data.created = 'n/a';
                 data.modified = 'n/a';
             }
@@ -45,18 +39,12 @@ class My_model {
         try {
             var mySchema = eval('db.' + model);
 
-            if(req){
-                // Do async job
-                if (req.session.userdata) {
-                    data.created = req.session.userdata.username;
-                    data.modified = req.session.userdata.username;
-                }
-                else {
-                    data.created = 'n/a';
-                    data.modified = 'n/a';
-                }
+            // Do async job
+            if (req.session.userdata) {
+                data.created = req.session.userdata.username;
+                data.modified = req.session.userdata.username;
             }
-            else{
+            else {
                 data.created = 'n/a';
                 data.modified = 'n/a';
             }
@@ -72,19 +60,40 @@ class My_model {
         }
     }
 
+    static async update_multi(req, model, where, data, multi = false) {
+        try {
+            var mySchema = 'db.' + model;
+
+            // Do async job
+            if (req.session.userdata) {
+                data.modified = req.session.userdata.username;
+            }
+            else{
+                data.modified = 'n/a';
+            }
+
+            let update = await eval(mySchema).update(where, data, { multi: multi });
+
+            if (!update) {
+                return { status: 500, data: update };
+            } else {
+                return { status: 200, data: update };
+            }
+        } catch (e) {
+            console.log(e);
+            return { status: e.code, data: e.message };
+        }
+    }
+
+
 
     static async update(req, model, where, data, create_new = false) {
         try {
             var mySchema = 'db.' + model;
 
             // Do async job
-            if(req){
-                if (req.session.userdata) {
-                    data.modified = req.session.userdata.username;
-                }
-                else{
-                    data.modified = 'n/a';
-                }
+            if (req.session.userdata) {
+                data.modified = req.session.userdata.username;
             }
             else{
                 data.modified = 'n/a';
@@ -263,12 +272,7 @@ class My_model {
     }
 
     static async standard_datetime(d) {
-        try{
-            return moment(d).utcOffset('+0700').format("YYYY-MM-DDTHH:mm:ss.SSSZ"); //req.params.startTime = 2016-09-25 00:00:00
-        }
-        catch(e){
-            return moment().utcOffset('+0700').format("YYYY-MM-DDTHH:mm:ss.SSSZ");
-        }
+        return moment(d).utcOffset('+0700').format("YYYY-MM-DDTHH:mm:ss.SSSZ"); //req.params.startTime = 2016-09-25 00:00:00
     }
 
     static async aggregate_count_group_by(model, where, group_by) {
@@ -344,26 +348,6 @@ class My_model {
                     }
                 ]
             );
-
-            return items;
-
-        } catch (err) {
-            console.log(err);
-            return {};
-        }
-    }
-
-    static async find_all_stream(model, where, str_fields = '', order = { createdAt: 'asc' }) {
-        try {
-            var mySchema = 'db.' + model;
-
-            let items;
-            if (str_fields == '') {
-                items = await eval(mySchema).find(where).lean(true).stream();
-            }
-            else {
-                items = await eval(mySchema).find(where, str_fields).lean(true).stream();
-            }
 
             return items;
 

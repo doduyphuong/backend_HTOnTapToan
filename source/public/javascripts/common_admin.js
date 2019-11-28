@@ -2,11 +2,11 @@ $(document).ready(function(){
     
 });
 
-function ListPage(current_page, page_size, model, search_fields, filter, order, is_action, action_list) {                                                
+function ListPage(current_page, page_size, model, search_fields, filter, order) {                                                
     $.ajax({
         url: '../base/list_page',
         method: 'POST',
-        data: {"page": current_page, "page_size": page_size, "model" : model, "filter" : filter, "search_fields" : search_fields, "order" : order, "is_action" : is_action, "action_list" : action_list, "_csrf" : reload_csrf_token()},
+        data: {"page": current_page, "page_size": page_size, "model" : model, "filter" : filter, "search_fields" : search_fields, "order" : order, "_csrf" : reload_csrf_token()},
         
         success: function (data) {
             //bind lại csrf vào các input form
@@ -27,7 +27,7 @@ function ListPage(current_page, page_size, model, search_fields, filter, order, 
                 totalPages: total_page,
                 visiblePages: 10,
                 onPageClick: function (event, page) {                                                              
-                    ListPage(page, page_size, model, search_fields, filter, order, is_action, action_list);
+                    ListPage(page, page_size, model, search_fields, filter, order);
                 }
             });
 
@@ -37,7 +37,7 @@ function ListPage(current_page, page_size, model, search_fields, filter, order, 
     });
 }
     
-function LoadDataList(model, page, page_size, search_fields, filter, order, is_action, action_list) {                
+function LoadDataList(model, page, page_size, search_fields, filter, order) {                
     var hash = window.location.hash.replace('#', '');
     var str_array = new Array();
     str_array = hash.split(';');      
@@ -59,7 +59,7 @@ function LoadDataList(model, page, page_size, search_fields, filter, order, is_a
             
         }        
     }            
-    ListPage(page, page_size, model, search_fields, filter, order, is_action, action_list); //Load data lần đầu theo url                                  
+    ListPage(page, page_size, model, search_fields, filter, order); //Load data lần đầu theo url                                  
 }
 
 
@@ -163,11 +163,3 @@ function fw_check_have_selected_item(cb_item_name){
     return anyBoxesChecked;
 }
 
-function fw_admin_goto_edit(id){
-    gotoUrlWithHash('edit/' + id);
-}
-
-function fw_admin_goto_detail(id){
-    gotoUrlWithHash('detail/' + id);
-
-}

@@ -2,6 +2,7 @@ var express = require('express');
 var hash_helper = {};
 var request = require('request');
 const crypto = require('crypto');
+const sha256 = require('sha256');
 
 /**
  * @api {function} aes_encrypt AES encrypt

@@ -1,5 +1,5 @@
 var express = require('express');
-var per_helper = {};
+var per_helper = express;
 var db = require('../models');
 var bols = require('../model_bols');
 var bcrypt = require('bcrypt');
@@ -58,7 +58,6 @@ per_helper.get_permission_value_user = async function(username, module){
     return result;
 }
 
-//set quyền khi đăng nhập
 //not async
 per_helper.auth_permission = function(req, user){
     if(user.permission_type == 'customize'){        
@@ -93,13 +92,7 @@ per_helper.auth_permission = function(req, user){
                                 per.push(item); 
                             } 
                                               
-                            //write per vào session
                             req.session.permission = per;
-
-                            //write update lại vào session userdata có phải root hay ko
-                            user.is_root = role.is_root;
-                            req.session.user_data = user;
-
                             req.session.save();// callback cần manual session để đồng bộ                            
                         }                        
                     });
@@ -108,17 +101,11 @@ per_helper.auth_permission = function(req, user){
                     //Nếu không phải root thì check permission theo role
                     db.Manage_permission_role.find({id_role : user.id_role}, 'module permission_value', function(err, data){
                         if(!err){
-                            //write per vào session
                             req.session.permission = data;
-
-                            //write update lại vào session userdata có phải root hay ko
-                            user.is_root = role.is_root;
-                            req.session.user_data = user;
-
                             req.session.save();// callback cần manual session để đồng bộ 
                         }
                     });
-                }                
+                }
             }
         });
     }
@@ -146,25 +133,19 @@ per_helper.add_module_to_current_session = function(req, module, permission_valu
     }    
 }
 
-//check quyền module khi đăng nhập
 per_helper.auth_check_permission = async function(req, res, check_permission){
     var result = false; //mặc định không có quyền
     let module = res.locals.adminController;//module đang vào
     
     let user_data = await helpers.auth_helper.get_userdata(req);
     if(user_data){
-        try{
-            let permission_of_user = user_data.permission;
-            let find = permission_of_user.find(o => o.module === module);//tìm module trong list quyền của user
-            //nếu tìm thấy thì check quyền
-            if(find){
-                if((find.permission_value & check_permission) == check_permission){
-                    result = true;
-                }
+        let permission_of_user = user_data.permission;
+        let find = permission_of_user.find(o => o.module === module);//tìm module trong list quyền của user
+        //nếu tìm thấy thì check quyền
+        if(find){
+            if((find.permission_value & check_permission) == check_permission){
+                result = true;
             }
-        }
-        catch(e){
-            result = false;
         }
 
         if(result == false){
@@ -177,7 +158,7 @@ per_helper.auth_check_permission = async function(req, res, check_permission){
     }
 }
 
-//Check quyền với module thông qua chỉ định rõ quyền cần check
+//Check quyền với module chỉ định
 per_helper.deep_check_permission = async function(req, res, module, check_permission){
 
     var result = false; //mặc định không có quyền    
@@ -202,23 +183,5 @@ per_helper.deep_check_permission = async function(req, res, module, check_permis
     }
 }
 
-//check quyền user hiện tại chỉ trả true/false, không xử lý mechanic
-per_helper.manual_check_permission = async function(req, module, check_permission){
-
-    var result = false; //mặc định không có quyền    
-    let user_data = await helpers.auth_helper.get_userdata(req);
-    if(user_data){
-        let permission_of_user = user_data.permission;
-        let find = permission_of_user.find(o => o.module === module);//tìm module trong list quyền của user
-        //nếu tìm thấy thì check quyền
-        if(find){
-            if((find.permission_value & check_permission) == check_permission){
-                result = true;
-            }
-        }        
-    }
-    
-    return result;
-}
 
 module.exports = per_helper;

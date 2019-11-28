@@ -1,5 +1,5 @@
 var express = require('express');
-var auth_helper = {};
+var auth_helper = express;
 var db = require('./../models');
 var bols = require('./../model_bols');
 var bcrypt = require('bcrypt');

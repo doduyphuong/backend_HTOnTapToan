@@ -5,6 +5,7 @@ var bols = require('./../model_bols');
 var moment = require('moment');
 var mkdirp = require('mkdirp');
 var nconf = require('nconf');
+var nJwt = require('njwt');
 nconf.argv().env().file({ file: __base + 'config_setting/config.json' });
 
 /**
@@ -23,19 +24,29 @@ helper.redirect = function(res, path){
     });
 }
 
+
+//show trang 404
 helper.show_404 = function(res){
     res.redirect(__baseUrl + '/handle-error/error/404');
 }
 
+//show trang 500
 helper.show_500 = function(res){
     res.redirect(__baseUrl + '/handle-error/error/500');
 }
 
+helper.set_cache = function(res, second){
+    if (!res.getHeader('Cache-Control')) 
+        res.setHeader('Cache-Control', 'public, max-age=' + second);
+}
+
+//set flash message
 helper.set_flash_message = function(req, type, msg){
     req.session.message = {type : type, msg : msg};    
     console.log("set " + JSON.stringify(req.session.message));
 }
 
+//get flash message
 helper.get_flash_message = function(req){
     if(req.session.message == undefined || req.session.message == null){
         return null;
@@ -63,14 +74,10 @@ helper.get_array_date = function(startDate, endDate) {
 
 //Trả về thời gian standard của db
 helper.standard_datetime = function(d){
-    try{
-        return moment(d).utcOffset('+0700').format("YYYY-MM-DDTHH:mm:ss.SSSZ"); //req.params.startTime = 2016-09-25 00:00:00
-    }
-    catch(e){
-        return moment().utcOffset('+0700').format("YYYY-MM-DDTHH:mm:ss.SSSZ");
-    }
+    return moment(d).utcOffset('+0700').format("YYYY-MM-DDTHH:mm:ss.SSSZ"); //req.params.startTime = 2016-09-25 00:00:00
 }
 
+//lấy tất cả param query
 helper.get_full_query_string = function(req){    
     var query = '';
     var t = 0;
@@ -90,6 +97,7 @@ helper.get_full_query_string = function(req){
     return query;
 }
 
+//bind data vào filter
 helper.bind_data_filter = function(req){
     var filter = {};
     var startDate = req.query.startDate;
@@ -118,7 +126,7 @@ helper.bind_data_filter = function(req){
             if(key != '_csrf' && key != 'startDate' && key != 'endDate' &&  req.query[key] != '' && req.query[key] != undefined){
                 var val = req.query[key];
                 val = val.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
-                filter[key] = val;            
+                filter[key] = val;             
             }        
         }
     }
@@ -126,6 +134,7 @@ helper.bind_data_filter = function(req){
     return filter;
 }
 
+//add data filter vào where lúc sử dụng aggregate trong mongo
 helper.aggregate_data_filter_where = function(where){
     var filter = {};
     var startDate = where.startDate;
@@ -160,6 +169,8 @@ helper.aggregate_data_filter_where = function(where){
     return filter;
 }
 
+
+//gắn data vào whwre truy vấn mongo thông thường
 helper.bind_data_where = function(where){
     var filter = {};
     var startDate = where.startDate;
@@ -194,6 +205,7 @@ helper.bind_data_where = function(where){
     return filter;
 }
 
+//Tạo chuỗi báo lỗiss
 helper.validator_error_message = function(errors){
     let message = '';    
     errors.forEach((err) => {
@@ -203,6 +215,7 @@ helper.validator_error_message = function(errors){
     return message;
 }
 
+//list các kiểu trạng thái
 helper.status_list = function(first = 'Active'){
     if(first == 'Active'){
         return [
@@ -234,12 +247,46 @@ helper.status_list = function(first = 'Active'){
     }
 }
 
+//cate của article
+helper.type_cate_list = function(first = 'All'){
+    if(first == 'All'){
+        return [
+            { name : 'All', value : 0},
+            { name : 'Internal', value : 1},            
+            { name : 'By OA', value : 2}
+        ];
+    }
+    else if(first == 'Internal'){
+        return [
+            { name : 'Internal', value : 1},
+            { name : 'All', value : 0},
+            { name : 'By OA', value : 2}
+        ];
+    }
+    else if(first == 'By OA'){
+        return [
+            { name : 'By OA', value : 2},
+            { name : 'Internal', value : 1},
+            { name : 'All', value : 0}            
+        ];
+    }
+    else{
+        return [
+            { name : 'All', value : 0},
+            { name : 'Internal', value : 1},            
+            { name : 'By OA', value : 2}
+        ];
+    }
+}
+
+//list kiêm dropdown yes/no
 helper.confirm_list = function(){
     return [
         { name : 'No', value : 0},
         { name : 'Yes', value : 1}
     ]
 }
+
 
 helper.view_data = function(data){
     let r = '';
@@ -250,19 +297,22 @@ helper.view_data = function(data){
     return r;
 }
 
+//lấy ip client
 helper.get_client_ip = function(req){
     var ip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress).split(",")[0];    
     return ip;
 }
 
+//tạo chuỗi string theo time
 helper.get_string_time = function(){
     let date = new Date();
     return moment(date).format('YYYYMMDDHHmmssSS');
 }
 
+//Khởi tạo file name default
 helper.init_file_name = function(extension, sub_path = '', refix = ''){
     let date = new Date();
-    let path = __base + '/medias' + '/' + sub_path + '/' + moment(date).format('YYYY/MM/DD/'); //path tương đối
+    let path = __base + 'medias' + '/' + sub_path + '/' + moment(date).format('YYYY/MM/DD/'); //path tương đối
     
     try {
         mkdirp.sync(path);        
@@ -281,9 +331,13 @@ helper.init_file_name = function(extension, sub_path = '', refix = ''){
         file_name = file_name + 'media_';
         db_file_name = db_file_name + 'media_';
     }
+    var rd = helpers.helper.get_random_int(1, 999) + '';
     var formattedDate = moment(date).format('YYYYMMDDHHmmssSSS');    
     file_name += formattedDate;
+    file_name += rd;
     db_file_name += formattedDate;
+    db_file_name += rd;
+
 
     file_name += '.' + extension;
     db_file_name += '.' + extension;
@@ -297,6 +351,7 @@ helper.init_file_name = function(extension, sub_path = '', refix = ''){
     return data;
 }
 
+//khởi tạo filename vào folder private
 helper.init_private_file_name = function(extension, sub_path = '', refix = ''){
     let date = new Date();
     let path = __base + 'medias_private' + '/' + sub_path + '/' + moment(date).format('YYYY/MM/DD/'); //path tương đối
@@ -318,9 +373,12 @@ helper.init_private_file_name = function(extension, sub_path = '', refix = ''){
         file_name = file_name + 'media_';
         db_file_name = db_file_name + 'media_';
     }
+    var rd = helpers.helper.get_random_int(1, 999) + '';
     var formattedDate = moment(date).format('YYYYMMDDHHmmssSSS');    
     file_name += formattedDate;
+    file_name += rd;
     db_file_name += formattedDate;
+    db_file_name += rd;
 
     file_name += '.' + extension;
     db_file_name += '.' + extension;
@@ -332,24 +390,29 @@ helper.init_private_file_name = function(extension, sub_path = '', refix = ''){
     return data;
 }
 
+//Lấy ảnh thumb
 helper.get_thumb_image = function(url){    
     return url.replace(/./gi,'_thumb.');;
 }
 
+//Lấy ảnh to
 helper.get_large_image = function(url){    
     return url.replace(/./gi,'_large.');;
 }
 
+//data kiểu hình
 helper.is_image = function(data){
     const isImage = require('is-image');
     data = '' + data;
     return isImage(data);
 }
 
+//Sử dụng cho frontend
 helper.frontend_set_menu_active = function(res, key_name){
     res.locals.active_menu = key_name;
 }
 
+//Chuyển 1 string sang slug
 helper.to_slug = function (str)
 {
     // Chuyển hết sang chữ thường
@@ -380,9 +443,11 @@ helper.to_slug = function (str)
     return str;
 }
 
+//Tạo lại số phone hợp lệ
 helper.rebuild_valid_phone_number = function(phone){
     var r = /^\d{9,13}$/;
     phone = phone + '';
+    phone = phone.trim();
     if(r.test(phone))
     {
         var f_84 = phone.indexOf('84');
@@ -394,7 +459,7 @@ helper.rebuild_valid_phone_number = function(phone){
             var f_0 = phone.indexOf('0');
             if(f_0 == 0)
             {
-                phone = phone.substring(1, phone.length - 1);
+                phone = phone.substring(1);
                 phone = '84' + phone;
                 return phone;
             }
@@ -409,32 +474,43 @@ helper.rebuild_valid_phone_number = function(phone){
     }
 }
 
+//format ngày tháng
 helper.format_date = function (strDate, strformat= 'YYYY-MM-DD') {
     var date_format = new Date(strDate);  
     return moment(date_format).format(strformat);
 }
 
+//Lấy giá trị config
 helper.get_config = function(key){
     return nconf.get(key);
 }
 
+//Kiểm tra OA có phải của 1 user zalo - hoặc oa có bị khóa hay không
 helper.check_oa_of_user = async function (req) {
     // Check oa thuoc contract cua user khong
     let oa_id = req.params.oa_id;
     let oa = null;
-    let contract_id = req.query.contract_id;
+    let contract_id = req.query.contract_uuid;
     var list_oa_register = {};
     var list_oa = {};
     var arr_Zalo_id = {}; 
     if (contract_id) {
-        arr_Zalo_id = await bols.My_model.find_all('Crm_register_n_contract', { 'contract_id': contract_id }, 'zalo_id');
+        arr_Zalo_id = await bols.My_model.find_all('Crm_register_n_contract', { 'contract_uuid': contract_id }, 'zalo_id');
+       
         if (arr_Zalo_id) {
             var temp = [];
             for (var i = 0; i < arr_Zalo_id.length; i++) {
                 temp.push(arr_Zalo_id[i].zalo_id);
             }
-            list_oa_register = await bols.My_model.aggregate_find_group_by('Crm_oa_n_register', { 'zalo_id': { $in: temp } }, 'oa_id');
-            list_oa = await bols.My_model.find_all('Crm_oa_info', { 'oa_id': { $in: list_oa_register } });
+            
+            list_oa_register = await bols.My_model.find_all('Crm_oa_n_register', { 'zalo_id': { $in: temp } }, 'oa_id');
+            
+            temp = [];
+            for(var i = 0;i<list_oa_register.length;i++){
+                temp.push(list_oa_register[i].oa_id);
+            }
+
+            list_oa = await bols.My_model.find_all('Crm_oa_info', { 'oa_id': { $in: temp } });
         }
 
         if(list_oa.length > 0)
@@ -452,6 +528,27 @@ helper.check_oa_of_user = async function (req) {
     return null;
 }
 
+//Kiểm tra OA có đang hoạt động hay không?
+helper.check_oa_is_active = async function(req){
+    let oa_id = req.params.oa_id;
+    var result = true;
+    
+    //chỉ check những function cần thông tin oa
+    if(oa_id != undefined && oa_id != '')
+    {
+        var oa = await bols.My_model.find_first('Crm_oa_info', { oa_id : oa_id, status : 1 });
+        if(oa){
+            result = true;
+        }
+        else{
+            result = false;
+        }
+    }
+
+    return result;
+}
+
+//check https
 helper.exist_https = function(data){
     var value = data.search("https");
     if(value != -1) 
@@ -459,11 +556,89 @@ helper.exist_https = function(data){
     return false;
 }
 
+//chuyen time theo chuẩn zalo
 helper.to_timestamp_from_age = function(age){
     var now = new Date();
     var t = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (age * 365)).getTime();
     t = t / 1000;
     return t;
+}
+
+helper.random_array = function(myArray){
+    var rand = myArray[Math.floor(Math.random() * myArray.length)];
+    return rand;
+}
+
+helper.group_count_array = function(array){
+    var testdata = array;
+    var i = 0, x, count, item;
+    while (i < testdata.length) {
+        count = 1;
+        item = testdata[i];
+        x = i + 1;
+
+        while (x < testdata.length && (x = testdata.indexOf(item, x)) != -1) {
+            count += 1;
+            testdata.splice(x, 1);
+        }
+
+        testdata[i] = {
+            index: testdata[i],
+            count: count
+        };
+        ++i;
+    }
+    return testdata;
+}
+
+helper.sub_string = function(str, l){
+    var tempt = "";
+    if (str.length > l)
+    {
+        tempt = str.substring(0, l);
+        var tempt_index = tempt.lastIndexOf(" ", tempt.length);
+        tempt = tempt.substring(0, tempt_index);
+    }
+    else
+    {
+        tempt = str;
+    }
+
+    return tempt;
+}
+
+
+helper.get_random_int = function (min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// payload = {
+//     a: 'asd',
+//     b: 'asdqwe',
+//     ...
+// }
+// Time tính theo ngày
+helper.renderToken = function (secretKey, payload, time = 1) {
+    // create signingKey
+    var signingKey = secretKey;
+
+    // Payload
+    var claims = payload;
+
+    var jwt = nJwt.create(claims, signingKey);
+
+    // Thời hạn 24h
+    var expire = new Date().getTime();
+    expire = expire + time * 24 * 60 * 60 * 1000;
+    // jwt tự chia lại cho 1000
+    jwt.setExpiration(expire);
+
+    // Token
+    var token = jwt.compact();
+
+    return token;
 }
 
 module.exports = helper;

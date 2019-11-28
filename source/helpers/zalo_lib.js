@@ -1,14 +1,37 @@
 var express = require('express');
-var zalo_lib = {};
+var zalo_lib = express;
 var request = require('request');
 var path = require('path');
+var querystring = require('querystring');
+const JSONbig = require('json-bigint')
+const JSONstrict = require('json-bigint')({
+	"strict": true
+})
+const JSONbigString = require('json-bigint')({
+	"storeAsString": true
+})
+
 
 //app config
 var appId = config.zaloapp.appid;
 var secretKey = config.zaloapp.secretkey;
+var oasecret = config.zaloapp.oasecret;
 
 //onbehalf
-var apiOnbehalf = 'https://openapi.zalo.me/v2.0/oa/';
+var apiOnbehalf = 'https://openapi.zaloapp.com/v2.0/oa/';
+
+zalo_lib.compare_mac = function (data, mac) {
+    
+    if (typeof data === 'object' && Object.keys(data).length > 0) {
+        let str = appId + JSON.stringify(data) + querystring.escape(data.timestamp) + oasecret;
+        var string_hash = helpers.hash_helper.sha256(str);
+        if (mac != string_hash) {
+            return false;
+        }
+        return true;
+    }
+    return false;
+};
 
 zalo_lib.getOaInfo = async function (req, res, accessTok) {
     try {
@@ -126,5 +149,30 @@ zalo_lib.sendActionMessage = async function (req, res, access_token, data_messag
         return null;
     }
 }
+
+zalo_lib.sendTextMessage = async function (req, res, access_token, message, zalo_id) {
+    try {
+        var action = 'message';
+        var apiUrl = apiOnbehalf + action;
+
+        var data = {
+            recipient : {
+                user_id : zalo_id
+            },
+            message : {
+                text : message
+            }
+        };
+        data = JSON.stringify(data);
+
+        var query_string = 'access_token=' + encodeURIComponent(access_token);
+        var result = await helpers.service_helper.http_request_post_api(null, null, apiUrl + '?' + query_string, data);
+        return result;
+    } catch (e) {
+        // systemLog.writeException({exception: e.message}, 'error', 'sendLinksMessageToUID');
+        console.log(e);
+        return null;
+    }
+};
 
 module.exports = zalo_lib;
