@@ -19,23 +19,7 @@ app.set('port', port);
  * Create HTTP server.
  * */
 
-
 var server = http.Server(app);
-var io = require('socket.io')(server, {
-    path: '/webhook-crm/socket',
-    pingInterval: 10000,
-    pingTimeout: 5000,
-    cookie: false,
-    transports : ['polling'],
-    allowUpgrades :	false
-});
-
-var socket = require('../controllers/socket')(io);
-
-// io.on('connection', function(socket){
-//   console.log('someone connected');
-// });
-
 
 /**
  * Listen on provided port, on all network interfaces.
