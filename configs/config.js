@@ -1,8 +1,8 @@
 var config = {
     app: {
-        appName: 'CRM Event Handle',
-        baseUrl: '/webhook-crm', //add refix dạng '/projectname'
-        staticUrl: 'http://app.brand.zing.vn/webhook-crm',
+        appName: 'Ôn tập kiến thức',
+        baseUrl: '', //add refix dạng '/projectname'
+        staticUrl: '',
         port: 80,
         secretKey: 'th@sBz$90k1sWVqP',
         proxy: 'http://10.30.46.99:3128'
@@ -18,19 +18,18 @@ var config = {
         oasecret : 'LCW41870QOVH1tD6PbNI'
     },
     db: { //staging database
-        host: '10.30.46.201',
-        port: 27017,
-        name: 'staging_zsl_crm',
-        username: 'staging_zsl_crm_user',
-        password: 'lLg8Eh1JBzJedE2u'
+        host: 'localhost',
+        port: '27017',
+        name: 'zalo_crm',
+        username: '',
+        password: ''
     },
     cors:{
-        whitelist : ['http://crm.zing.vn', 'http://localhost', 'http://app.event.zalo.me', 'http://app.brand.zing.vn']
+        whitelist : ['https://localhost:3000', 'https://localhost:3001']
     },
     redis: {
-        host: '10.30.46.20',
+        host: '127.0.0.1',
         port: 6379,
-        prefix: 'zsl_crm_',
         db: 0,
         options: {}
     }

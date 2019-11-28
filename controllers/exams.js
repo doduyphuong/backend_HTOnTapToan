@@ -127,5 +127,4 @@ exams.delete('/:id', function (req, res, next) {
 
 });
 
-
 module.exports = exams;
