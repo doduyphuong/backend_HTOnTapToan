@@ -18,11 +18,11 @@ var configdev = {
         oasecret : 'LCW41870QOVH1tD6PbNI'
     },
     db: {
-        host: 'localhost',
+        host: 'cluster0-2dijw.gcp.mongodb.net',
         port: '27017',
-        name: 'zalo_crm',
-        username: '',
-        password: ''
+        name: 'test',
+        username: 'superadmin',
+        password: '4ofbEKTto18V1a9K'
     },
     cors:{
         whitelist : ['https://localhost:3000', 'https://localhost:3001']
