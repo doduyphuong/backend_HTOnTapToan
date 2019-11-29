@@ -2,7 +2,6 @@ var express = require('express');
 var admin_helper = express;
 var db = require('./../models');
 var bols = require('./../model_bols');
-var bcrypt = require('bcrypt');
 const crypto = require('crypto');
 
  /**

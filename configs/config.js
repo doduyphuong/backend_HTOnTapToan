@@ -5,7 +5,7 @@ var config = {
         staticUrl: '',
         port: 80,
         secretKey: 'th@sBz$90k1sWVqP',
-        proxy: 'http://10.30.46.99:3128'
+        proxy: ''
     },
     recaptcha: {
         sitekey: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
@@ -17,12 +17,12 @@ var config = {
         callback: 'https://app.event.zaloapp.com/zs/app/callback?type=app&state=3326E94E611F3B3B5003',
         oasecret : 'LCW41870QOVH1tD6PbNI'
     },
-    db: { //staging database
-        host: 'localhost',
+    db: {
+        host: 'cluster0-2dijw.gcp.mongodb.net',
         port: '27017',
-        name: 'zalo_crm',
-        username: '',
-        password: ''
+        name: 'test',
+        username: 'superadmin',
+        password: '4ofbEKTto18V1a9K'
     },
     cors:{
         whitelist : ['https://localhost:3000', 'https://localhost:3001']
