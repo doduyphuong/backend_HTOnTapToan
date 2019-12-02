@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var db = {};
 const { db: { host, port, name, username, password} } = config;  
 // let connectionString = `mongodb+srv://${username}:${password}@${host}/${name}?retryWrites=true&w=majority`;
-let connectionString = `mongodb://${username}:${password}@${host}:${port}/?ssl=true&appName=@on-tap-cung-be@`;
+let connectionString = process.env.CUSTOMCONNSTR_MyConnectionString || `mongodb://${username}:${password}@${host}:${port}/?ssl=true&appName=@on-tap-cung-be@`;
 
 const options = {
     useNewUrlParser: true,
