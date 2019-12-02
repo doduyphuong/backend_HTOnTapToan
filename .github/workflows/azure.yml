@@ -23,6 +23,12 @@ jobs:
     name: Build and Deploy
     runs-on: ubuntu-latest
     steps:
+    - task: AzureWebApp@1
+      inputs:
+        azureSubscription: 'Azure subscription 1'
+        appName: 'ontapcungbe'
+        package: '$(System.DefaultWorkingDirectory)'
+        customWebConfig: '-Handler iisnode -NodeStartFile server.js -appType node'
     - uses: actions/checkout@master
     - name: Use Node.js ${{ env.NODE_VERSION }}
       uses: actions/setup-node@v1
