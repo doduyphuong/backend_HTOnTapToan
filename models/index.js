@@ -4,8 +4,9 @@ var path = require('path');
 var mongoose = require('mongoose');
 var db = {};
 const { db: { host, port, name, username, password} } = config;  
-// let connectionString = `mongodb://${username}:${password}@${host}:${port}/${name}`;
-let connectionString = `mongodb+srv://${username}:${password}@${host}/${name}?retryWrites=true&w=majority`;
+// let connectionString = `mongodb+srv://${username}:${password}@${host}/${name}?retryWrites=true&w=majority`;
+let connectionString = `mongodb://${username}:${password}@${host}:${port}/?ssl=true&appName=@on-tap-cung-be@`;
+
 const options = {
     useNewUrlParser: true,
     autoIndex: false, // Don't build indexes
