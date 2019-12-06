@@ -6,7 +6,7 @@ var bols = require('./../model_bols');
 
 /* GET home page. */
 index.get('/', function(req, res, next) {
-  res.render('index', { title: "Adtima's CRM Platform" });
+  res.render('index', { contend: "Xin chao be" });
 });
 
 
