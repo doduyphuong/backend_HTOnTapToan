@@ -1,7 +1,5 @@
 var express = require('express');
 var exams = express.Router();
-var db = require('../models');
-var bols = require('../model_bols');
 
 var listDeThi = [
     {

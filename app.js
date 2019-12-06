@@ -57,14 +57,6 @@ app.use(cors(whitelist_domain));
 //helpers
 global.helpers = require('./helpers');
 
-
-//socket
-var socket_server = require('http').Server(app);
-var io = require('socket.io').listen(socket_server);
-io.on('connection', function (socket) {
-  console.log('socket connected');
-});
-
 //locals config
 app.locals.appName = config.app.appName;
 
@@ -128,7 +120,7 @@ app.use(helmet.xssFilter());
 // });
 
 //fileUpload
-app.use(fileUpload({limits: { fileSize: 6 * 1024 * 1024 }})); //6MB
+app.use(fileUpload({limits: { fileSize: 1 * 1024 * 1024 }})); //1MB
 
 
 //app middleware tổng của app
@@ -162,18 +154,6 @@ app.use(__baseUrl + '/medias', express.static(path.join(__dirname, 'medias')));
 //route
 var indexRouter = require('./configs/routes');
 app.use(__baseUrl + '/', mdw_app, indexRouter);
-
-var openRouter = require('./configs/routes_openapi');
-app.use(__baseUrl + '/openapi', mdw_app, openRouter);
-
-//socket
-// var socket_io = require('socket.io');
-// var io = socket_io();
-// app.io = io;
-// var socket_chat = require('./configs/socket')(io);
-// app.use(__baseUrl + '/messenger', socket_chat);
-// app.use(__baseUrl + '/messenger', mdw_app, socket);
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -7,16 +7,8 @@ index.get('/', function(req, res, next) {
   res.render('index', { contend: "Xin chao be" });
 });
 
-
 index.get('/messenger', function(req, res, next) {
-  var data = null;
-  res.render('messenger', data);
+  res.send({status: 200, message: "path /messenger"});
 });
-
-
-index.get('/chat', function(req, res, next) {
-  
-});
-
 
 module.exports = index;
