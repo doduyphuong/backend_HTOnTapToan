@@ -1,7 +1,5 @@
 var express = require('express');
 var index = express.Router();
-var db = require('./../models');
-var bols = require('./../model_bols');
 
 
 /* GET home page. */
