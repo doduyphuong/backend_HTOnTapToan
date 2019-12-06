@@ -18,11 +18,10 @@ var configdev = {
         oasecret : 'LCW41870QOVH1tD6PbNI'
     },
     db: {
-        host: 'on-tap-cung-be.mongo.cosmos.azure.com',
-        port: '10255',
-        name: 'test',
-        username: 'on-tap-cung-be',
-        password: 'gaZTlm8SVfoDoR2Ghrzec49NIXZQrTIFJd0IV4KHqtIGV8l1heUWbhX42wv9HUqi17hJC3PyqA3huhxQ0pf80A%3D%3D'
+        host: 'cluster0-2dijw.gcp.mongodb.net',
+        port: '27017',
+        username: 'superadmin',
+        password: '4ofbEKTto18V1a9K'
     },
     cors:{
         whitelist : ['https://localhost:3000', 'https://localhost:3001']
