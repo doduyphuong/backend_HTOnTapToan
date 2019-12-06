@@ -8,6 +8,7 @@ let connectionString = process.env.MONGODB_URI || `mongodb+srv://${username}:${p
 
 const options = {
     useNewUrlParser: true,
+    useUnifiedTopology: true,
     autoIndex: false, // Don't build indexes
     reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
     keepAlive: true,

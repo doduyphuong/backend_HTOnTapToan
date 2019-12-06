@@ -18,8 +18,9 @@ var configdev = {
         oasecret : 'LCW41870QOVH1tD6PbNI'
     },
     db: {
-        host: 'cluster0-2dijw.gcp.mongodb.net',
+        host: 'cluster0-6r0in.mongodb.net',
         port: '27017',
+        name: 'test',
         username: 'superadmin',
         password: '4ofbEKTto18V1a9K'
     },
