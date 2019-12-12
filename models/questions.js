@@ -27,6 +27,10 @@ var Questions_schema = new Schema({
     // _id choose document
     result: {
         type: String,
+        default: ''
+    },
+    examId: {
+        type: String,
         required: true
     },
     created: {

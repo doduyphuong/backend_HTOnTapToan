@@ -92,7 +92,7 @@ user.put('/:userId', async function (req, res, next) {
         }
     }
 
-    res.status(402).send('Error param id');
+    res.status(400).send('Bad request.');
 });
 
 // Update password
@@ -120,7 +120,7 @@ user.put('/reset_pass/:userId', async function (req, res, next) {
         }
     }
 
-    res.status(402).send('Error param id');
+    res.status(400).send('Bad request.');
 });
 
 // Delete 1 exam
@@ -131,7 +131,7 @@ user.delete('/:userId', async function (req, res, next) {
         return res.json(result);
     }
 
-    res.status(402).send('Error param id');
+    res.status(400).send('Bad request.');
 });
 
 module.exports = user;
