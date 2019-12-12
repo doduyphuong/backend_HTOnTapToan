@@ -45,10 +45,11 @@ class My_model {
                 data.modified = req.session.userdata.username;
             }
             else {
+                console.log(data)
                 data.created = 'n/a';
                 data.modified = 'n/a';
             }
-
+            console.log(data);
 
             let tmp = eval(new mySchema(data));
             let new_item = await tmp.save();

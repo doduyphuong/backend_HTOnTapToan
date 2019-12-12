@@ -3,8 +3,9 @@ var fs = require('fs');
 var path = require('path');
 var mongoose = require('mongoose');
 var db = {};
-const { db: { host, port, name, username, password} } = config;  
-let connectionString = process.env.MONGODB_URI || `mongodb+srv://${username}:${password}@${host}/${name}?retryWrites=true&w=majority`;
+const { db: { host, port, name, username, password} } = config; 
+// `mongodb+srv://${username}:${password}@${host}/${name}?retryWrites=true&w=majority`;
+let connectionString = process.env.MONGODB_URI || `mongodb://${username}:${password}@${host}:${port}/${name}`;
 
 const options = {
     useNewUrlParser: true,

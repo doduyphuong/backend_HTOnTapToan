@@ -18,21 +18,15 @@ var configdev = {
         oasecret : 'LCW41870QOVH1tD6PbNI'
     },
     db: {
-        host: 'cluster0-6r0in.mongodb.net',
+        host: '127.0.0.1',
         port: '27017',
-        name: 'test',
-        username: 'superadmin',
-        password: '4ofbEKTto18V1a9K'
+        name: 'on_tap_cung_be',
+        username: '',
+        password: ''
     },
     cors:{
         whitelist : ['https://localhost:3000', 'https://localhost:3001']
-    },
-    // redis: {
-    //     host: '127.0.0.1',
-    //     port: 6379,
-    //     db: 0,
-    //     options: {}
-    // }
+    }
 };
 
 module.exports = configdev;

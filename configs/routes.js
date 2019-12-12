@@ -4,9 +4,8 @@ var routes = express.Router();
 var index = require('./../controllers/index');
 routes.use('/', index);
 
-var exams = require('../controllers/exams');
-routes.use('/exams', exams);
-// routes.use('/', exams);
+var exam = require('../controllers/exam');
+routes.use('/exam', exam);
 
 //error
 var handle_error = require('./../controllers/handle_error');

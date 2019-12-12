@@ -10,7 +10,7 @@ var helmet = require('helmet');
 var csrf = require('csurf');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
-var env = 'production';//production, dev
+var env = 'dev';//production, dev
 
 var app = express();
 
@@ -172,7 +172,7 @@ app.use(function (err, req, res, next) {
 });
 
 //port
-// app.listen(config.app.port);
+app.listen(config.app.port);
 
 
 module.exports = app;
