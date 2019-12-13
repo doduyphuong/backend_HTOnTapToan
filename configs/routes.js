@@ -13,6 +13,9 @@ routes.use('/user', user);
 var rank = require('../controllers/rank');
 routes.use('/rank', rank);
 
+var login = require('../controllers/login');
+routes.use('/login', login);
+
 //error
 var handle_error = require('./../controllers/handle_error');
 routes.use('/handle-error', handle_error);

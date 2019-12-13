@@ -629,7 +629,7 @@ helper.renderToken = function (secretKey, payload, time = 1) {
 
     var jwt = nJwt.create(claims, signingKey);
 
-    // Thời hạn 24h
+    // Thời hạn 1h
     var expire = new Date().getTime();
     expire = expire + time * 24 * 60 * 60 * 1000;
     // jwt tự chia lại cho 1000

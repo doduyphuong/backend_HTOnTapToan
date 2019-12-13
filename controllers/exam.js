@@ -2,6 +2,7 @@ var express = require('express');
 var exam = express.Router();
 var db = require('./../models');
 var bols = require('./../model_bols');
+var middleware = require('./../configs/middlewware');
 
 /* GET list exams */
 exam.get('/', async function (req, res, next) {
@@ -30,7 +31,7 @@ exam.get('/:examId', async function (req, res, next) {
 });
 
 // Create 1 exam
-exam.post('/', async function (req, res, next) {
+exam.post('/', middleware.mdw_auth, async function (req, res, next) {
     req.checkBody('name', 'Name is required').notEmpty();
     req.checkBody('time_test', 'Time test is required').notEmpty();
     req.checkBody('number_question', 'Number question is required').notEmpty();
@@ -65,7 +66,7 @@ listAnswer: [
     }
 ]
 */
-exam.post('/mark-exam', async function (req, res) {
+exam.post('/mark-exam', middleware.mdw_auth, async function (req, res) {
     var { examId, listAnswer } = req.body;
     if (examId) {
         var checkExam = await bols.My_model.find_first('Exams', { _id: examId });
@@ -105,7 +106,7 @@ exam.post('/mark-exam', async function (req, res) {
 })
 
 // Update 1 exam
-exam.put('/:examId', async function (req, res, next) {
+exam.put('/:examId', middleware.mdw_auth, async function (req, res, next) {
     var { examId } = req.params;
     if (examId) {
         req.checkBody('name', 'Name is required').notEmpty();
@@ -139,14 +140,14 @@ exam.put('/:examId', async function (req, res, next) {
 });
 
 // Delete 1 exam
-exam.delete('/:examId', async function (req, res, next) {
-    var { examId } = req.params;
-    if (examId) {
-        var result = await bols.My_model.delete('Exams', { _id: examId });
-        res.json(result);
-    }
+// exam.delete('/:examId', async function (req, res, next) {
+//     var { examId } = req.params;
+//     if (examId) {
+//         var result = await bols.My_model.delete('Exams', { _id: examId });
+//         res.json(result);
+//     }
 
-    res.status(400).send('Error param id');
-});
+//     res.status(400).send('Error param id');
+// });
 
 module.exports = exam;

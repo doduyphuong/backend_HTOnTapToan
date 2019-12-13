@@ -20,14 +20,14 @@ auth_helper.verify_user = async function(username, password){
     if(user != null){
         const match = bcrypt.compareSync(password + config.app.secretKey, user.password);        
         if(match == true){
-            let role = await bols.My_model.findById('Manage_role', user.id_role);
-            if(role != null){
-                user.is_admin = role.is_admin; // check xem role có được vào admin không
-            }
-            else{
-                user.is_admin = 0;//không thuộc role nào
-            }
-
+            // let role = await bols.My_model.findById('Manage_role', user.id_role);
+            // if(role != null){
+            //     user.is_admin = role.is_admin; // check xem role có được vào admin không
+            // }
+            // else{
+            //     user.is_admin = 0;//không thuộc role nào
+            // }
+            
             return user;
         }
         else{

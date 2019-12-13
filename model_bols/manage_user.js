@@ -4,7 +4,7 @@ class Manage_user {
     static async update_password(id, password) {
         try {            
             password = bcrypt.hashSync(password, 10);
-            let update = await db.Manage_user.where({_id : id}).update({ password : password });           
+            let update = await db.Users.where({_id : id}).update({ password : password });           
             if (!update) {
               return {status: 500, data : update};
             } else {
@@ -18,7 +18,7 @@ class Manage_user {
     
     static async find_by_username(username) {
         try {            
-            let user = await db.Manage_user.findOne({ username : username});           
+            let user = await db.Users.findOne({ username : username});           
             
             return user;
         } catch (e) {
