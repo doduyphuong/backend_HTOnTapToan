@@ -13,6 +13,10 @@ var Exams_schema = new Schema({
     },
     number_question :{
         type : Number,
+        default: 0
+    },
+    description :{
+        type : String,
         required: true
     },
     created: {

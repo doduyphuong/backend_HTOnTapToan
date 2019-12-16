@@ -8,7 +8,7 @@ index.get('/', function(req, res, next) {
 });
 
 index.get('/messenger', function(req, res, next) {
-  res.send({status: 200, message: "path /messenger"});
+  res.send('message');
 });
 
 module.exports = index;

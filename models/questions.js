@@ -22,7 +22,7 @@ var Questions_schema = new Schema({
     */
     choose: {
         type: [Schema.Types.Mixed],
-        required: true
+        default: []
     },
     // _id choose document
     result: {
