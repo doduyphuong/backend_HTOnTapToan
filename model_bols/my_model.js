@@ -19,6 +19,10 @@ class My_model {
                 data.created = req.session.userdata.username;
                 data.modified = req.session.userdata.username;
             }
+            else if(req.user) {
+                data.created = req.user.username;
+                data.modified = req.user.username;
+            }
             else {
                 data.created = 'n/a';
                 data.modified = 'n/a';
@@ -44,6 +48,10 @@ class My_model {
                 data.created = req.session.userdata.username;
                 data.modified = req.session.userdata.username;
             }
+            else if(req.user) {
+                data.created = req.user.username;
+                data.modified = req.user.username;
+            }
             else {
                 console.log(data)
                 data.created = 'n/a';
@@ -68,6 +76,9 @@ class My_model {
             // Do async job
             if (req.session.userdata) {
                 data.modified = req.session.userdata.username;
+            }
+            else if(req.user) {
+                data.modified = req.user.username;
             }
             else{
                 data.modified = 'n/a';

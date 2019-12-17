@@ -54,21 +54,34 @@ user.post('/', async function(req, res, next) {
 
     var errors = req.validationErrors();
     if (errors) {
-        return res.json(errors);
+        return res.status(400).json(errors);
     } else {
-        let dataCreate = {
-            username: req.body.username,
-            password: req.body.password + config.app.secretKey,
-            name: req.body.name,
-            phone: req.body.phone,
-        };
+        let checkUserName = await bols.My_model.find_first('Users', { username: req.body.username });
+        if (!checkUserName) {
+            let dataCreate = {
+                username: req.body.username,
+                password: req.body.password + config.app.secretKey,
+                name: req.body.name,
+                phone: req.body.phone,
+            };
 
-        var newItem = await bols.My_model.create(req, 'Users', dataCreate);
+            var newItem = await bols.My_model.create(req, 'Users', dataCreate);
 
-        if (newItem.status == 200) {
-            return res.status(200).send('Create user success!!!');
+            if (newItem.status == 200) {
+                return res.status(200).send('Create user success!!!');
+            } else {
+                return res.status(500).send('Create user error...');
+            }
         } else {
-            return res.status(500).send('Create user error...');
+            let err = [
+                {
+                    "location": "body",
+                    "param": "username",
+                    "msg": "Username is exist.",
+                    "value": req.body.username
+                }
+            ];
+            return res.status(400).json(err);
         }
     }
 });
@@ -139,7 +152,7 @@ user.put('/reset_pass/:userId', async function(req, res, next) {
                 }
             }
         } else {
-            return res.status(401).json({message: 'Invalid user.'});
+            return res.status(401).json({ message: 'Invalid user.' });
         }
     }
 

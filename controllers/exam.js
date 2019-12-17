@@ -113,6 +113,12 @@ exam.post('/mark-exam', middleware.mdw_auth, async function(req, res) {
         if (checkExam) {
             var listQuestion = await bols.My_model.find_all('Quesitons', { examId });
             var result = [];
+            result.push({
+                examId: checkExam._id,
+                time_test: checkExam.time_test,
+            });
+
+            var score = 0;
             for (var i = 0; i < listAnswer.length; i++) {
                 var answer = listAnswer[i];
                 var checkTrue = false;
@@ -121,6 +127,7 @@ exam.post('/mark-exam', middleware.mdw_auth, async function(req, res) {
 
                     if (answer.idQuestion == question._id) {
                         if (question.type == 1 && answer.idAnswer == question.result) {
+                            score += 1;
                             result.push({
                                 name: question.name,
                                 idQuestion: answer.idQuestion,
@@ -134,6 +141,7 @@ exam.post('/mark-exam', middleware.mdw_auth, async function(req, res) {
                             question.type == 2 &&
                             answer.idAnswer.toLowerCase() == question.result.toLowerCase()
                         ) {
+                            score += 1;
                             result.push({
                                 name: question.name,
                                 idQuestion: answer.idQuestion,
@@ -158,10 +166,21 @@ exam.post('/mark-exam', middleware.mdw_auth, async function(req, res) {
                         data_tmp['options'] = question.choose;
                     }
 
-                    result.push({});
+                    result.push(data_tmp);
                 }
             }
 
+            result[0].listQuestion = checkExam.number_question;
+            result[0].listAnswer = listAnswer.length;
+            result[0].score = score;
+
+            let rank = {
+                score,
+                id_exam: checkExam._id,
+                id_user: req.user._id
+            };
+
+            let newRank = await bols.My_model.create(req, 'Ranks', rank);
             return res.status(200).json(result);
         }
     }
