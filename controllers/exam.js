@@ -16,7 +16,7 @@ exam.get('/', async function(req, res, next) {
     str_fields = '';
 
     var listDeThi = [];
-    listDeThi = await bols.My_model.paging('', where, str_fields, page, page_size);
+    listDeThi = await bols.My_model.paging('Exams', where, str_fields, page, page_size);
 
     res.json(listDeThi);
 });
