@@ -34,7 +34,7 @@
     "moment": "^2.22.2",
     "mongoose": "^5.5.12",
     "morgan": "^1.9.1",
-    "nconf": "^0.10.0",
+    "nconf": "^0.11.4",
     "njwt": "^1.0.0",
     "node-cron": "^2.0.3",
     "querystring": "^0.2.0",
