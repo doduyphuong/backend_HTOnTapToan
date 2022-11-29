@@ -12,7 +12,7 @@
     "cors": "^2.8.4",
     "csurf": "^1.9.0",
     "debug": "~2.6.9",
-    "ejs": "~2.5.7",
+    "ejs": "~3.1.7",
     "ejs-locals": "^1.0.2",
     "ejs-locals-vadorequest": "^2.0.2",
     "exceljs": "^1.15.0",
