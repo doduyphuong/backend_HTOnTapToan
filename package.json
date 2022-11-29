@@ -28,7 +28,7 @@
     "helmet": "^3.21.2",
     "http-errors": "~1.6.2",
     "is-image": "^2.0.0",
-    "jimp": "^0.5.3",
+    "jimp": "^0.16.2",
     "json-bigint": "^1.0.0",
     "mkdirp": "^0.5.1",
     "moment": "^2.22.2",
