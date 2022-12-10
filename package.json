@@ -16,7 +16,7 @@
     "ejs-locals": "^1.0.2",
     "ejs-locals-vadorequest": "^2.0.2",
     "exceljs": "^1.15.0",
-    "express": "~4.16.0",
+    "express": "~4.18.2",
     "express-fileupload": "^1.1.9",
     "express-flash": "0.0.2",
     "express-partials": "^0.3.0",
